@@ -1,15 +1,17 @@
 'use strict';
 
-let path = require('path');
-let webpack = require('webpack');
-let baseConfig = require('./base');
-let defaultSettings = require('./defaults');
+const path = require('path');
+const webpack = require('webpack');
+const baseConfig = require('./base');
+const defaultSettings = require('./defaults');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // Add needed plugins here
-let BowerWebpackPlugin = require('bower-webpack-plugin');
+const BowerWebpackPlugin = require('bower-webpack-plugin');
 
-let config = Object.assign({}, baseConfig, {
+const config = Object.assign({}, baseConfig, {
   entry: [
+    'react-hot-loader/patch',
     'webpack-dev-server/client?http://127.0.0.1:' + defaultSettings.port,
     'webpack/hot/only-dev-server',
     './src/index'
@@ -21,7 +23,8 @@ let config = Object.assign({}, baseConfig, {
     new webpack.NoErrorsPlugin(),
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
-    })
+    }),
+    new BundleAnalyzerPlugin()
   ],
   module: defaultSettings.getDefaultModules()
 });

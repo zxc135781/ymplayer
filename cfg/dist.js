@@ -5,7 +5,7 @@ let webpack = require('webpack');
 
 let baseConfig = require('./base');
 let defaultSettings = require('./defaults');
-
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 // Add needed plugins here
 let BowerWebpackPlugin = require('bower-webpack-plugin');
 
@@ -21,10 +21,27 @@ let config = Object.assign({}, baseConfig, {
     new BowerWebpackPlugin({
       searchResolveModulesDirectories: false
     }),
-    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      output: {
+        comments: false,
+      },
+      compress: {
+        warnings: false
+      }
+    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.AggressiveMergingPlugin(),
-    new webpack.NoErrorsPlugin()
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'server',
+      analyzerHost: '127.0.0.1',
+      analyzerPort: 8888,
+      defaultSizes: 'parsed',
+      openAnalyzer: true,
+      generateStatsFile: false,
+      statsFilename: 'stats.json',
+      statsOptions: null,
+      logLevel: 'info'
+    })
   ],
   module: defaultSettings.getDefaultModules()
 });

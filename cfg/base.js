@@ -16,7 +16,10 @@ module.exports = {
   devtool: 'eval',
   output: {
     path: path.join(__dirname, '/../dist/assets'),
-    filename: 'ymplayer.js',
+    filename: 'muse-player.js',
+    library: 'MuseDOM',
+    libraryTarget: 'umd',
+    umdNamedDefine: true,
     publicPath: defaultSettings.publicPath
   },
   devServer: {
@@ -35,7 +38,8 @@ module.exports = {
       sources: `${defaultSettings.srcPath}/sources/`,
       stores: `${defaultSettings.srcPath}/stores/`,
       styles: `${defaultSettings.srcPath}/styles/`,
-      config: `${defaultSettings.srcPath}/config/` + process.env.REACT_WEBPACK_ENV
+      config: `${defaultSettings.srcPath}/config/` + process.env.REACT_WEBPACK_ENV,
+      'react/lib/ReactMount': 'react-dom/lib/ReactMount'
     }
   },
   module: {}
